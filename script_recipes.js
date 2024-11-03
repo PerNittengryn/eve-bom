@@ -75,9 +75,13 @@ function displayRecipe() {
 }
 
 // Function to build the recipe list recursively
-function buildRecipeList(typeId, parentElement, totals) {
+// Modified buildRecipeList function to handle integer-only quantities with rounding up
+function buildRecipeList(typeId, parentElement, totals, parentQuantity = 1) {
     const item = recipes[typeId];
     if (!item || !item.i) return;
+
+    const outputQuantity = item.o || 1; // Default to 1 if "o" is not specified
+    const scaledQuantity = Math.ceil(parentQuantity / outputQuantity); // Scale by output per run, rounding up
 
     // Add the blueprint name as the first item in the list with quantity 1
     const blueprintId = item.b; // Get the blueprint id from the recipe item
@@ -95,23 +99,25 @@ function buildRecipeList(typeId, parentElement, totals) {
     // Iterate through the ingredients
     item.i.forEach(([quantity, ingredientId]) => {
         const ingredientName = typeIds[ingredientId] || ingredientId; // Get the name from typeIds mapping or use id
+        const totalQuantityNeeded = Math.ceil(quantity * scaledQuantity); // Calculate total quantity, rounded up
 
         // Update the totals only for non-blueprint items
         if (!recipes[ingredientId]) { // Check if the ingredient is not a blueprint
             if (!totals.components[ingredientName]) {
                 totals.components[ingredientName] = 0;
             }
-            totals.components[ingredientName] += quantity; // Add to the total quantity for this ingredient
+            totals.components[ingredientName] += totalQuantityNeeded; // Add to the total quantity for this ingredient
         }
 
         const li = document.createElement('li');
-        li.textContent = `${quantity} x ${ingredientName}`; // Use ingredient name
+        li.textContent = `${totalQuantityNeeded} x ${ingredientName}`; // Show scaled ingredient name and quantity
         parentElement.appendChild(li);
 
         // If the ingredient has its own recipe, create a nested list
         if (recipes[ingredientId] && recipes[ingredientId].i.length > 0) {
             const nestedUl = document.createElement('ul');
-            buildRecipeList(ingredientId, nestedUl, totals); // Recursively build the list for the ingredient
+            // Recursively build the list for the ingredient, passing scaled quantity
+            buildRecipeList(ingredientId, nestedUl, totals, totalQuantityNeeded);
             li.appendChild(nestedUl); // Append the nested list to the current ingredient
         }
     });
