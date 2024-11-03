@@ -29,6 +29,7 @@ function updateDropdown() {
         item.onclick = () => {
             document.getElementById('productInput').value = type; // Set input value
             dropdown.style.display = 'none'; // Hide dropdown
+            displayRecipe(); // Trigger the displayRecipe function
         };
         dropdown.appendChild(item);
     });
@@ -47,3 +48,4 @@ document.addEventListener('click', (event) => {
 
 // Assign updateDropdown function to the input for real-time searching
 document.getElementById('productInput').addEventListener('input', updateDropdown);
+
