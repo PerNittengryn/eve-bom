@@ -225,3 +225,4 @@ document.addEventListener('click', (event) => {
 
 // Assign updateDropdown function to the input for real-time searching
 document.getElementById('productInput').addEventListener('input', updateDropdown);
+document.getElementById('quantityInput').addEventListener('input', displayRecipe);
