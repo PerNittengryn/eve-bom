@@ -4,25 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Eve Online: Bill of Materials</title>
-  <link rel="stylesheet" href="styles.css?v=1">
+  <link rel="stylesheet" href="styles.css?v=20241104T1437">
 </head>
 <body>
+
   <h1>Eve Online: Bill of Materials</h1>
+
   <div id="search-container">
+    <input type="text" id="quantityInput" value="1">
+    <span class="separator">x</span>
     <input type="text" id="productInput" placeholder="E.g., Cynabal">
     <div id="dropdown"></div>
   </div>
-  <div>
-    <button id="expand-all">Expand All</button>
-    <button id="collapse-all">Collapse All</button>
+
+  <div class="container">
+    <div id="hierarchy-list" class="box">
+      <h2>Hierarchy</h2>
+    </div>
+  
+    <div id="totals-list" class="box">
+      <h2>Totals</h2>
+    </div>
   </div>
 
-  <div id="recipe-list"></div>
-  <div id="totals-list"></div>
-
-  <script src="script_search.js?v=1"></script>
-  <script src="script_fold.js?v=1"></script>
-  <script src="script_recipes.js?v=1"></script>
+  <script src="script.js?v=20241104T1437"></script>
 </body>
 </html>
-
